@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>信息收集</title>
+  <style>
+    body {
+      background-color: #f5f7fa;
+      font-family: 'Helvetica Neue', 'Noto Sans SC', sans-serif;
+      padding: 20px;
+    }
+
+    .form-container {
+      background: white;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    h2 { color: #333; margin-bottom: 30px; }
+    fieldset {
+      border: none;
+      margin-bottom: 30px;
+    }
+
+    legend {
+      font-weight: bold;
+      color: #17a2b8;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-top: 5px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      margin-top: 5px;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .checkbox-group label {
+      display: inline-block;
+    }
+
+    .btn-row {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      margin: 0 10px;
+      cursor: pointer;
+    }
+
+    .btn-submit { background-color: #20c997; color: white; }
+    .btn-submit:hover { background-color: #17a2b8; }
+
+    .btn-skip {
+      background: white;
+      color: #333;
+      border: 1px solid #ccc;
+    }
+
+    .btn-skip:hover {
+      background: #eee;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>信息收集</h2>
+    <form method="POST" action="/save-profile">
+      <fieldset>
+        <legend>🎯 基本信息</legend>
+        <label>姓名：<input type="text" name="full_name" required></label>
+        <label>年龄：<input type="number" name="age" min="0" max="100" required></label>
+        <label>性别：
+          <select name="gender">
+            <option value="男">男</option>
+            <option value="女">女</option>
+            <option value="其他">其他</option>
+          </select>
+        </label>
+        <label>学历：
+          <select name="education_level">
+            <option value="本科">本科</option>
+            <option value="硕士">硕士</option>
+            <option value="博士">博士</option>
+          </select>
+        </label>
+        <label>国籍：<input type="text" name="nationality"></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>📚 学术信息</legend>
+        <label>专业：<input type="text" name="major"></label>
+        <label>学位：
+          <select name="degree">
+            <option value="学士">学士</option>
+            <option value="硕士">硕士</option>
+            <option value="博士">博士</option>
+          </select>
+        </label>
+        <label>知识掌握度：
+          <input type="range" name="knowledge_level" min="0" max="100" value="50">
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>💡 兴趣偏好</legend>
+        <label>喜好科目：</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="liked_subjects" value="数学"> 数学</label>
+          <label><input type="checkbox" name="liked_subjects" value="编程"> 编程</label>
+          <label><input type="checkbox" name="liked_subjects" value="英语"> 英语</label>
+          <label><input type="checkbox" name="liked_subjects" value="历史"> 历史</label>
+          <label><input type="checkbox" name="liked_subjects" value="物理"> 物理</label>
+        </div>
+        <label>未来目标：<textarea name="goals" rows="2"></textarea></label>
+        <label>兴趣方向：<textarea name="interests" rows="2"></textarea></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>📊 技能评分（1~10）</legend>
+        <label>编程：<input type="range" name="programming_skill" min="1" max="10" value="5"></label>
+        <label>数学：<input type="range" name="math_skill" min="1" max="10" value="5"></label>
+        <label>英语：<input type="range" name="english_skill" min="1" max="10" value="5"></label>
+      </fieldset>
+
+      <div class="btn-row">
+        <button type="submit" class="btn-submit">完成</button>
+        <a href="/home"><button type="button" class="btn-skip">跳过</button></a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

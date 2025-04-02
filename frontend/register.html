@@ -1,0 +1,115 @@
+<!-- frontend/register.html -->
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>用户注册</title>
+  <style>
+    body {
+      background-color: #f5f7fa;
+      font-family: 'Helvetica Neue', 'Noto Sans SC', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .register-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .register-card {
+      background: white;
+      width: 400px;
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .register-card h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 15px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #28a745;
+      box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2);
+    }
+
+    button {
+      width: 100%;
+      background-color: #28a745;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    .error {
+      color: red;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .success {
+      color: green;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .login-link a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <div class="register-card">
+      <h2>创建账号</h2>
+      <form method="POST" action="/register">
+        <input type="text" name="username" placeholder="用户名" required>
+        <input type="email" name="email" placeholder="邮箱" required>
+        <input type="password" name="password" placeholder="密码" required>
+        <input type="password" name="confirm_password" placeholder="确认密码" required>
+        {% if error %}<div class="error">{{ error }}</div>{% endif %}
+        {% if success %}<div class="success">{{ success }}</div>{% endif %}
+        <button type="submit">注册</button>
+      </form>
+      <div class="login-link">
+        已有账号？<a href="/login">点击登录</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!-- frontend/login.html -->
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>登录 - 个性化教育平台</title>
+  <style>
+    body {
+      background-color: #f5f7fa;
+      font-family: 'Helvetica Neue', 'Noto Sans SC', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-card {
+      background: white;
+      width: 400px;
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-card h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px 15px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0,123,255,0.2);
+    }
+
+    button {
+      width: 100%;
+      background-color: #007bff;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .error {
+      color: red;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .register-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .register-link a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <h2>欢迎登录</h2>
+      <form method="POST" action="/login">
+        <input type="email" name="email" placeholder="请输入邮箱" required>
+        <input type="password" name="password" placeholder="请输入密码" required>
+        {% if error %}<div class="error">{{ error }}</div>{% endif %}
+        <button type="submit">登录</button>
+      </form>
+      <div class="register-link">
+        没有账号？<a href="/register">点击注册</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

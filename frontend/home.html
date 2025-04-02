@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>系统主页</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background-color: #f5f7fa;
+      font-family: 'Helvetica Neue', 'Noto Sans SC', sans-serif;
+    }
+
+    /* 顶部导航栏 */
+    .navbar {
+      background-color: #ffffff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 30px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .navbar .logo {
+      font-weight: bold;
+      font-size: 20px;
+      color: #007bff;
+    }
+
+    .navbar .user-dropdown {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: none;
+      min-width: 120px;
+    }
+
+    .dropdown-menu a {
+      display: block;
+      padding: 10px;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .dropdown-menu a:hover {
+      background-color: #f0f0f0;
+    }
+
+    /* 聊天主区域 */
+    .chat-container {
+      max-width: 800px;
+      margin: 20px auto 80px;
+      padding: 0 20px;
+    }
+
+    .message {
+      margin: 10px 0;
+      max-width: 70%;
+      padding: 12px 16px;
+      border-radius: 16px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      line-height: 1.6;
+    }
+
+    .user-message {
+      background-color: #007bff;
+      color: white;
+      align-self: flex-end;
+      margin-left: auto;
+    }
+
+    .llm-message {
+      background-color: #f1f1f1;
+      color: #333;
+      align-self: flex-start;
+      margin-right: auto;
+    }
+
+    /* 输入区域 */
+    .input-area {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: white;
+      padding: 15px 30px;
+      box-shadow: 0 -1px 6px rgba(0,0,0,0.05);
+      display: flex;
+      gap: 10px;
+    }
+
+    .input-area textarea {
+      flex: 1;
+      padding: 10px 15px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      resize: none;
+    }
+
+    .input-area button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .input-area button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+  <script>
+    function toggleDropdown() {
+      const menu = document.getElementById("dropdown-menu");
+      menu.style.display = (menu.style.display === "block") ? "none" : "block";
+    }
+
+    // 点击页面其他地方关闭下拉
+    document.addEventListener('click', function(event) {
+      const dropdown = document.getElementById('dropdown-menu');
+      const userBtn = document.getElementById('user-btn');
+      if (!userBtn.contains(event.target)) {
+        dropdown.style.display = 'none';
+      }
+    });
+  </script>
+</head>
+<body>
+  <!-- 顶部导航栏 -->
+  <div class="navbar">
+    <div class="logo">🎓 个性化教育平台</div>
+    <div class="user-dropdown" id="user-btn" onclick="toggleDropdown()">
+      {{ username }}
+      <div class="dropdown-menu" id="dropdown-menu">
+        <a href="/settings">设置</a>
+        <a href="/logout">登出</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 聊天内容区域 -->
+  <div class="chat-container">
+    {% for message in chat_history %}
+      <div class="message {{ 'user-message' if message['from'] == 'user' else 'llm-message' }}">
+        {{ message['content'] }}
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- 输入区域 -->
+  <form class="input-area" method="POST" action="/home">
+    <textarea name="message" rows="1" placeholder="请输入内容..." required></textarea>
+    <button type="submit">发送</button>
+  </form>
+</body>
+</html>

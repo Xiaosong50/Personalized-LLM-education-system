@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>设置页面</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Helvetica Neue', 'Noto Sans SC', sans-serif;
+      background-color: #f5f7fa;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+
+    /* 左侧导航栏 */
+    .sidebar {
+      width: 200px;
+      background-color: #e9ecef;
+      padding-top: 30px;
+      box-shadow: 2px 0 6px rgba(0,0,0,0.05);
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 15px 20px;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .sidebar a.active {
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+    }
+
+    .sidebar a:hover {
+      background-color: #dee2e6;
+    }
+
+    /* 主体区域 */
+    .main {
+      flex: 1;
+      padding: 40px;
+      background-color: white;
+    }
+
+    .main h2 {
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    form label {
+      display: block;
+      margin-top: 15px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    button {
+      margin-top: 30px;
+      padding: 12px 20px;
+      font-size: 16px;
+      background-color: #28a745;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    .success { color: green; margin-top: 15px; }
+    .error { color: red; margin-top: 15px; }
+  </style>
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('.main-section').forEach(div => div.style.display = 'none');
+      document.getElementById(id).style.display = 'block';
+
+      document.querySelectorAll('.sidebar a').forEach(link => link.classList.remove('active'));
+      document.getElementById('link-' + id).classList.add('active');
+    }
+
+    window.onload = () => {
+      showSection('profile'); // 默认显示
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <!-- 左侧导航 -->
+    <div class="sidebar">
+      <a href="#" id="link-profile" onclick="showSection('profile')">👤 个人信息</a>
+      <a href="#" id="link-password" onclick="showSection('password')">🔒 修改密码</a>
+      <a href="/home">↩️ 返回主页</a>
+    </div>
+
+    <!-- 右侧内容 -->
+    <div class="main">
+      <!-- 个人信息 -->
+      <div class="main-section" id="profile" style="display: none;">
+        <h2>编辑个人信息</h2>
+        <form method="POST" action="/update-profile">
+          <fieldset>
+            <legend>🎯 基本信息</legend>
+            <label>姓名：<input type="text" name="full_name" value="{{ profile.full_name }}"></label>
+            <label>年龄：<input type="number" name="age" value="{{ profile.age }}"></label>
+            <label>性别：
+              <select name="gender">
+                <option value="男" {% if profile.gender == '男' %}selected{% endif %}>男</option>
+                <option value="女" {% if profile.gender == '女' %}selected{% endif %}>女</option>
+                <option value="其他" {% if profile.gender == '其他' %}selected{% endif %}>其他</option>
+              </select>
+            </label>
+            <label>学历：
+              <select name="education_level">
+                <option value="本科" {% if profile.education_level == '本科' %}selected{% endif %}>本科</option>
+                <option value="硕士" {% if profile.education_level == '硕士' %}selected{% endif %}>硕士</option>
+                <option value="博士" {% if profile.education_level == '博士' %}selected{% endif %}>博士</option>
+              </select>
+            </label>
+            <label>国籍：<input type="text" name="nationality" value="{{ profile.nationality }}"></label>
+          </fieldset>
+        
+          <fieldset>
+            <legend>📚 学术信息</legend>
+            <label>专业：<input type="text" name="major" value="{{ profile.major }}"></label>
+            <label>学位：
+              <select name="degree">
+                <option value="学士" {% if profile.degree == '学士' %}selected{% endif %}>学士</option>
+                <option value="硕士" {% if profile.degree == '硕士' %}selected{% endif %}>硕士</option>
+                <option value="博士" {% if profile.degree == '博士' %}selected{% endif %}>博士</option>
+              </select>
+            </label>
+            <label>知识掌握度：
+              <input type="range" name="knowledge_level" min="0" max="100" value="{{ profile.knowledge_level or 50 }}">
+            </label>
+          </fieldset>
+        
+          <fieldset>
+            <legend>💡 兴趣偏好</legend>
+            <label>喜好科目：</label>
+            <div class="checkbox-group">
+              {% set liked_list = (profile.liked_subjects or "").split(',') %}
+              {% for subject in ['数学', '编程', '英语', '历史', '物理'] %}
+                <label><input type="checkbox" name="liked_subjects" value="{{ subject }}" {% if subject in liked_list %}checked{% endif %}> {{ subject }}</label>
+              {% endfor %}
+            </div>
+            <label>未来目标：<input type="text" name="goals" value="{{ profile.goals }}"></label>
+            <label>兴趣方向：<input type="text" name="interests" value="{{ profile.interests }}"></label>
+          </fieldset>
+        
+          <fieldset>
+            <legend>📊 技能评分（1~10）</legend>
+            <label>编程：<input type="range" name="programming_skill" min="1" max="10" value="{{ profile.programming_skill or 5 }}"></label>
+            <label>数学：<input type="range" name="math_skill" min="1" max="10" value="{{ profile.math_skill or 5 }}"></label>
+            <label>英语：<input type="range" name="english_skill" min="1" max="10" value="{{ profile.english_skill or 5 }}"></label>
+          </fieldset>
+        
+          <button type="submit">保存修改</button>
+          {% if profile_msg %}<div class="{{ 'success' if profile_success else 'error' }}">{{ profile_msg }}</div>{% endif %}
+        </form>
+      </div>
+
+      <!-- 修改密码 -->
+      <div class="main-section" id="password" style="display: none;">
+        <h2>修改密码</h2>
+        <form method="POST" action="/change-password">
+          <label>旧密码：<input type="password" name="old_password" required></label>
+          <label>新密码：<input type="password" name="new_password" required></label>
+          <label>确认新密码：<input type="password" name="confirm_password" required></label>
+          <button type="submit">修改密码</button>
+          {% if pwd_msg %}<div class="{{ 'success' if pwd_success else 'error' }}">{{ pwd_msg }}</div>{% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
